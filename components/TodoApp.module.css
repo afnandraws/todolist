@@ -1,0 +1,68 @@
+.parent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+}
+
+
+.container {
+    width: 600px;
+    display: flex;
+    justify-content:start;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 9px;
+    background-color: white;
+}
+
+.container input[type=text] {
+    outline: none;
+    appearance: none;
+    border: none;
+    font-size: large;
+    height: 20px;
+    width: 500px;
+    padding-right: 10px;
+}
+
+.container input[type=date] {
+    background: none;
+    border: none;
+}
+
+.container ::-webkit-datetime-edit { padding: 1rem; background-color:rgb(255, 255, 255); border-radius: 15px;}
+.container ::-webkit-datetime-edit-fields-wrapper { background: none; border-radius: 10px; font-size: large;}
+.container ::-webkit-datetime-edit-text { padding: 0 0.3em; }
+.container ::-webkit-datetime-edit-month-field { color: rgb(180, 180, 255); }
+.container ::-webkit-datetime-edit-day-field { color: rgb(118, 175, 118); }
+.container ::-webkit-datetime-edit-year-field { color: rgb(255, 136, 255); }
+
+.date {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.date input {
+    bottom: 40px;
+    position: absolute;
+    margin-bottom: 20px;
+}
+
+.date button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color:rgb(234, 234, 234);
+}
+
+.date button:hover {
+    cursor: pointer;
+    background-color: aliceblue;
+}

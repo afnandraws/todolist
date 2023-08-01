@@ -1,0 +1,90 @@
+.multiselect-dropdown {
+    padding-left: 10px;
+    position:relative;
+    width: 200px;
+  }
+  
+  .select-header {
+    border-radius: 10px;
+    background: #eee;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .select-header :hover {
+    cursor: pointer;
+
+  }
+
+  .selected-items {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: small;
+  }
+
+  .selected-items div {
+    width: 100%;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .svg {
+    position: relative;
+    transition: transform 0.5s ease;
+  }
+
+  
+  .selected-item {
+    background: rgb(255, 255, 255);
+    color: #1e1e1e; 
+    border-radius: 4px;
+    max-width: max-content;
+    padding: 3px;
+    margin: 2px;
+  }
+  
+  .dropdown-arrow {
+    width: 12px; 
+    height: 12px;
+  }
+  
+  .select-options {
+    position: absolute;
+    width: 152px;
+    top: 50%;
+    background-color: #ffffff;
+    max-height: 200px;
+    margin-top: 30px;
+    border-radius: 15px;
+    z-index: 5;
+  }
+  
+  .select-option {
+    padding: 15px;
+  }
+
+  .select-options :nth-child(1) {
+    border-radius: 14px 14px 0px 0px;
+  }
+  
+  .select-options :nth-last-child(1) {
+    border-radius: 0px 0px 14px 14px;
+  }
+
+  .select-option.selected {
+    background: #2ca54c;
+    color: #fff;
+  }
+  
+  .select-option:hover {
+    background: #87cefa;
+  }
