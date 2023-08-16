@@ -5,16 +5,36 @@
     width: auto;
 }
 
+.bar {
+    display: flex;
+    align-items: center;
+    max-height: 50px;
+}
 
 .container {
-    width: 600px;
+    max-width: 600px;
     display: flex;
-    justify-content:start;
+    justify-content: flex-start;
     align-items: center;
-    padding: 1rem;
-    border-radius: 9px;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 5px;
     background-color: white;
 }
+
+.completed {
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: white;
+    color: rgb(197, 197, 197);
+}
+
 
 .container input[type=text] {
     outline: none;
@@ -52,17 +72,16 @@
 }
 
 .date button {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 40px;
     width: 40px;
     border: none;
-    border-radius: 10px;
-    background-color:rgb(234, 234, 234);
+    background-color: white;
 }
 
-.date button:hover {
-    cursor: pointer;
-    background-color: aliceblue;
+.todos {
+    padding-top: 15px;
 }

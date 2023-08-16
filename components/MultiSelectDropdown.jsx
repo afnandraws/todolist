@@ -2,20 +2,26 @@ import { useEffect, useRef, useState } from 'react';
 import './MultiSelectDropdown.css'
 import dropdown from '../public/dropdown.svg'
 import Image from 'next/image';
+import { useClickAway } from '@uidotdev/usehooks';
 
 
 function MultiSelectDropdown ({ tags, handleSelected, options }) {
   const [selected, setSelected] = useState();
-  const [open, setOpen] = useState(false)
+  const [toggleTags, setToggleTags] = useState(false)
   const svgRef = useRef()
+  const tagRef = useClickAway(() => {
+    setToggleTags(false);
+    svgRef.current.style.transform = 'rotate(0deg)'
+  });
 
   useEffect(() => {
     if (!tags) {
       setSelected()
     }
+
+    setToggleTags(false)
+    svgRef.current.style.transform = 'rotate(0deg)'
   }, [tags])
-  
-  
 
   function toggle(option) {
     if (selected === option) {
@@ -33,7 +39,7 @@ function MultiSelectDropdown ({ tags, handleSelected, options }) {
   return (
     <>
     <div className="multiselect-dropdown">
-      <div className="select-header" onClick={() => {setOpen(!open); open ? svgRef.current.style.transform = 'rotate(0deg)' : svgRef.current.style.transform = 'rotate(180deg)'}}>
+      <div className="select-header" onClick={() => {setToggleTags(!toggleTags); toggleTags ? svgRef.current.style.transform = 'rotate(0deg)' : svgRef.current.style.transform = 'rotate(180deg)'}}>
       <div className="selected-items">
           {selected ?  '' : <div><span>No List</span></div>}
           {selected && <div key={selected} className="selected-item">{selected}</div>}
@@ -41,8 +47,8 @@ function MultiSelectDropdown ({ tags, handleSelected, options }) {
 
         </div>
       </div>
-      {open &&
-      <div className="select-options">
+      {toggleTags &&
+      <div className="select-options" ref={tagRef}>
         {options.map(option => (
           <div 
             key={option}

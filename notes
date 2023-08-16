@@ -1,0 +1,11 @@
+Things outstanding:
+
+- Edit existing tasks functionality
+- 'Add Subtasks' functionality
+- Clean up completion of tasks as well as displaying of completed tasks
+- Fix colours for tags
+- Remove socket.io integration
+- Integrate IndexedDB API
+
+- Got quite far in development but I realised that prop drilling was getting too heavy, I had the following levels: - TodoApp - Todos - Todo - Subtasks
+  So I decided to use ReduxToolkit
