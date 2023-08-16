@@ -1,35 +1,32 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import MultiSelectDropdown from './MultiSelectDropdown'
 
 import styles from './TodoApp.module.css'
 import Image from "next/image";
 import calendar from '../public/calendar.svg'
-import dropdown from '../public/dropdown.svg'
+import tick from '../public/tick.svg'
 
 import { useClickAway } from "@uidotdev/usehooks";
 
-import { addTodos, completeTodos, removeTodos } from '../redux/slices/todoSlice'
+import { addTodos } from '../redux/slices/todoSlice'
 import { useDispatch, useSelector } from "react-redux";
 import Todo from "./Todo";
 
 const TodoApp = () => {
   const dispatch = useDispatch();
-
   const todo = useSelector((state) => state.todoReducer)
-  console.log(todo)
-
-    const [todos, setTodos] = useState([]);
-    const [date, setDate] = useState();
-    const [tags, setTags] = useState()
-    const [toggleDate, setToggleDate] = useState(false) //this controls the date input box opening
-    const [toggleCompleted, setToggleCompleted] = useState(false)  //this controls the completed tasks opening
+  
+  const [date, setDate] = useState();
+  const [tags, setTags] = useState()
     
-    const svgRef = useRef()
-    const dateRef = useClickAway(() => {
-      setToggleDate(false);
-    }); // this uses useClickAway hook to close the menu when a click is registered outside of the menu
+  const [toggleDate, setToggleDate] = useState(false) //this controls the date input box opening
+  const [toggleCompleted, setToggleCompleted] = useState(false)  //this controls the completed tasks opening
+    
+  const dateRef = useClickAway(() => {
+    setToggleDate(false);
+  }); // this uses useClickAway hook to close the menu when a click is registered outside of the menu
 
     function handleSelected(option) {
       setTags(option)
@@ -52,31 +49,11 @@ const TodoApp = () => {
         setToggleCompleted(false)
       }
     }
-  
-    function completeTodo(index) {
-      const newTodos = [...todos];
-      dispatch(
-        completeTodos({index})
-      )
-        setTimeout(() => {
-          newTodos[index].isCompleted = !newTodos[index].isCompleted;
-          setTodos(newTodos);
-        }, 1000);
-
-      console.log(newTodos)
-    }
-  
-    function removeTodo(index) {
-      dispatch(
-        removeTodos({index})
-      )
-    }
-
-    // console.log(todos.filter(n => n.isCompleted))
 
     return (
     <div className={styles.parent}>
       <div className={styles.bar}>
+      <div className={styles.completeToggle} onClick={() => setToggleCompleted(!toggleCompleted)}><Image alt="tick" src={tick} style={toggleCompleted && { backgroundColor: 'rgb(114, 212, 135)' }} height={20}/></div>
       <div className={styles.container}>
          <input placeholder="Write a new task" autoFocus type="text" onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -92,17 +69,28 @@ const TodoApp = () => {
         <MultiSelectDropdown tags={tags} handleSelected={handleSelected} options={['notes','calls', 'other']}/>
         </div>
 
+        { toggleCompleted ?
         <div className={styles.todos}>
-              {todo.map((todo, index) => (
+        {todo.map((todo, index) => (
+                todo.isCompleted &&
                 <Todo
                   key={index} 
                   index={index}
                   todo={todo}
-                />))}
-          </div>
-
-        {/* {todos.filter(n => n.isCompleted).length === 0 ? '' : <div onClick={() => {setToggleCompleted(!toggleCompleted); toggleCompleted ? svgRef.current.style.transform = 'rotate(0deg)' : svgRef.current.style.transform = 'rotate(180deg)'}} className={styles.completed}>Completed todos <Image ref={svgRef} alt='dropdown' height={20} src={dropdown}/></div>} */}
-        {/* {toggleCompleted ? <Todos todos={todos.filter(n => n.isCompleted)} completed={true}/> : '' }  */}
+                />
+        ))} 
+        </div>
+        :
+        <div className={styles.todos}>
+        {todo.map((todo, index) => (
+          !todo.isCompleted &&
+          <Todo
+            key={index} 
+            index={index}
+            todo={todo}
+          />))}
+    </div>
+        }
     </div>
 
     );

@@ -85,3 +85,29 @@
 .todos {
     padding-top: 15px;
 }
+
+.completeToggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    height: 40px;
+    width: 40px;
+
+    padding: 0.5rem;
+    border-radius: 5px;
+
+    margin-right: 0.5rem;
+
+}
+
+.completeToggle img {
+    padding: 10px;
+    border-radius: 10px;
+    filter: brightness(1) sepia(1) saturate(500%) hue-rotate(100deg);
+}
+
+.completeToggle img:hover {
+    background-color: rgba(114, 212, 135, 0.397);
+}

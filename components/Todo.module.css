@@ -187,6 +187,23 @@
     padding-left: 4px;
 }
 
+.subtasks div input {
+    padding-left: 4px;
+    outline: none;
+    appearance: none;
+    font-size: small;
+    border: none;
+    background-color: transparent;
+}
+
+.subtasks div input:active {
+    border: none;
+}
+
+.subtasks div input:focus {
+    border: none;
+}
+
 .subtasks div:hover {
     color: black;
     
