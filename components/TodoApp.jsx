@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MultiSelectDropdown from './MultiSelectDropdown'
 
 import styles from './TodoApp.module.css'
@@ -13,6 +13,7 @@ import { useClickAway } from "@uidotdev/usehooks";
 import { addTodos } from '../redux/slices/todoSlice'
 import { useDispatch, useSelector } from "react-redux";
 import Todo from "./Todo";
+import { db } from "./indexedDB/db";
 
 const TodoApp = () => {
   const dispatch = useDispatch();
@@ -28,18 +29,45 @@ const TodoApp = () => {
     setToggleDate(false);
   }); // this uses useClickAway hook to close the menu when a click is registered outside of the menu
 
-    function handleSelected(option) {
-      setTags(option)
-    }
+  async function getStoredTodos() {
+    const todos = await db.todos.toArray()
 
+    todos.forEach((todo => {
+      dispatch(addTodos({
+        id: todo.id,
+        todo: todo.text,
+        date: todo.date,
+        tags: todo.tags,
+        isCompleted: todo.isCompleted,
+        subtasks: todo.subtasks
+      }))
+    }))
+    console.log(todos)
+  }
+
+  useEffect(() => {
+    getStoredTodos()
+
+
+  }, [])
+  
+
+  function handleSelected(option) {
+      setTags(option)
+  }
 
     function addTodo(todo) {
+      const id = Math.random()
+
       if (todo) {
         dispatch(
           addTodos({
+            id: id,
             todo: todo,
             date: date,
             tags: tags,
+            isCompleted: false,
+            subtasks: []
           })
         );
 

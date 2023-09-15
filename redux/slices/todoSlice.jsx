@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// {text: '', isSubCompleted: false,}
+import { db } from '../../components/indexedDB/db'
 
 export const todoSlice = createSlice({
 	name: "todo",
@@ -9,14 +9,24 @@ export const todoSlice = createSlice({
 		addTodos: (state, action) => {
 			const newPayload = action.payload;
 
+			db.todos.add({
+				id: newPayload.id,
+                text: newPayload.todo, 
+                date: newPayload.date, 
+                tags: newPayload.tags, 
+                isCompleted: newPayload.isCompleted,
+                subtasks: newPayload.subtasks
+            });
+
 			return [
 				...state,
 				{
+					id: newPayload.id,
 					text: newPayload.todo,
 					date: newPayload.date,
 					tags: newPayload.tags,
-					isCompleted: false,
-					subtasks: [],
+					isCompleted: newPayload.isCompleted,
+					subtasks: newPayload.subtasks,
 				},
 			];
 		},
@@ -25,18 +35,25 @@ export const todoSlice = createSlice({
 			const newState = [...state];
 			newState[newPayload.index].isCompleted =
 				!newState[newPayload.index].isCompleted;
+
+				db.todos
+				.where({todo: newState[newPayload.index].text})
+				.modify({isCompleted: newState[newPayload.index].isCompleted})
+
 			setTimeout(() => {
 				return void [newState];
 			}, 1000);
 		},
 		removeTodos: (state, action) => {
 			const newPayload = action.payload;
+
 			state.splice(newPayload.index, 1);
 			return void [state];
 		},
 		addTasks: (state, action) => {
 			const newPayload = action.payload;
 			const newState = [...state];
+
 			newState[newPayload.index].subtasks.push({
 				text: newPayload.text,
 				isCompleted: false,

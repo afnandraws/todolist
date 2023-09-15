@@ -12,6 +12,7 @@ import { useClickAway } from '@uidotdev/usehooks';
 
 import { useDispatch } from 'react-redux';
 import { addTasks, completeTasks, completeTodos, removeTodos } from '../redux/slices/todoSlice';
+import { db } from './indexedDB/db';
 
 const Todo = ({ todo, index }) => {
     const [menuVisibility, setMenuVisibility] = useState(false) //this will make the menu visible
@@ -28,28 +29,63 @@ const Todo = ({ todo, index }) => {
       setMenuVisibility(false);
     }); // this uses useClickAway hook to close the menu when a click is registered outside of the menu
     
-    function completeTodo() {
+    async function completeTodo() {
         dispatch(completeTodos({index}))
+
+        const indexedDBvalue = await db.todos
+				.where({id: todo.id})
+				.first()
+      
+        const toggle = !indexedDBvalue.isCompleted
+      
+        await db.todos.update(todo.id, {isCompleted: toggle});
     }
       
-    function removeTodo() {
+    async function removeTodo() {
         dispatch(removeTodos({index}))
+
+        await db.todos
+			  .where({id: todo.id})
+			  .delete(1)
+
     }
 
-    function addSubtask(event) {
+    async function addSubtask(event) {
       if (event.key === 'Enter') {
         dispatch(addTasks({index: index, text: subtaskRef.current.value}))
+
+        const indexedDBvalue = await db.todos
+				.where({id: todo.id})
+				.first()
+      
+        console.log(indexedDBvalue.subtasks)
+        await db.todos.update(todo.id, {subtasks: [...todo.subtasks, {text: subtaskRef.current.value, isCompleted: false}]});
+
         setAddSubtaskInput(!addsubtaskInput)
       }
     }
 
-    function completeSubtask(subtaskIndex) {
+    async function completeSubtask(subtaskIndex) {
       dispatch(
         completeTasks({
           index: index,
           subtaskIndex: subtaskIndex,
         }
         ))
+
+      const indexedDBvalue = await db.todos
+			.where({id: todo.id})
+			.first()
+      
+      console.log(indexedDBvalue.subtasks[subtaskIndex])
+
+      const newsubtask = indexedDBvalue.subtasks
+      
+      newsubtask[subtaskIndex].isCompleted = !newsubtask[subtaskIndex].isCompleted;
+
+      await db.todos.update(todo.id, {subtasks: newsubtask});
+
+
     }
 
     return (
@@ -75,7 +111,7 @@ const Todo = ({ todo, index }) => {
           <div ref={menuRef} className={styles.menu}>
             <span onClick={() => {removeTodo(); setMenuVisibility(false)}}>Remove</span>
             <span>Edit</span>
-            <span onClick={() => {setSubtasksContainerVisibility(!subtasksContainerVisibility)}}>{subtasksContainerVisibility ? 'Remove' : 'Add'} Subtasks</span>
+            <span onClick={() => {setSubtasksContainerVisibility(!subtasksContainerVisibility)}}>{subtasksContainerVisibility ? 'Hide' : 'Add'} Subtasks</span>
           </div>}
 
         {subtasksContainerVisibility && <div className={styles.subtaskscontainer}>
